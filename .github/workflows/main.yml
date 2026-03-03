@@ -24,8 +24,15 @@ jobs:
               "subscriptionId": "${{ secrets.AZURE_SUBSCRIPTION_ID }}",
               "tenantId": "${{ secrets.AZURE_TENANT_ID }}"
             }
-              
 
-    - name: Run Azure CLI commands
-      run: |
-        az containerapp up -n hello-world --repo https://github.com/rubeshudayakumar/Azure-Container-App 
+    - name: Build and deploy Container App
+      uses: azure/container-apps-deploy-action@v1
+      with:
+        appSourcePath: ${{ github.workspace }}
+        acrName: helloworldtest
+        containerAppName: my-container-app
+        resourceGroup: app-grp
+
+    # - name: Run Azure CLI commands
+    #   run: |
+    #     az containerapp up -n hello-world --repo https://github.com/rubeshudayakumar/Azure-Container-App 
