@@ -19,7 +19,7 @@ RUN npm run build
 RUN npm install -g serve
 
 # Expose port 3000
-EXPOSE 3000
+EXPOSE 80
 
 # Start the application
 CMD ["serve", "-s", "dist", "-l", "80"]
