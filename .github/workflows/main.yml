@@ -31,7 +31,7 @@ jobs:
         appSourcePath: ${{ github.workspace }}
         acrName: hellowworldtest
         containerAppName: my-container-app
-        resourceGroup: app-grp
+        resourceGroup: 47552fb7-1cbb-4569-9a44-dba43c43285f_rg_6454
 
     # - name: Run Azure CLI commands
     #   run: |
