@@ -1,6 +1,6 @@
 name: Azure CLI Login with OIDC
 
-on: [push]
+on: [push,workflow_dispatch]
 
 # Permissions required for OIDC
 permissions:
