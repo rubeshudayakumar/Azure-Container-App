@@ -7,6 +7,9 @@ permissions:
   id-token: write
   contents: read
 
+env:
+  IMAGE_NAME: react-app
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -25,14 +28,28 @@ jobs:
               "tenantId": "${{ secrets.AZURE_TENANT_ID }}"
             }
 
-    - name: Build and deploy Container App
-      uses: azure/container-apps-deploy-action@v1
+    - name: Log in to Azure Container Registry
+      uses: docker/login-action@v3
       with:
-        appSourcePath: ${{ github.workspace }}
-        acrName: hellowworldtest
-        containerAppName: my-container-app
-        resourceGroup: 47552fb7-1cbb-4569-9a44-dba43c43285f_rg_6454
+          registry: hellowworldtest.azurecr.io
+          username: hellowworldtest
+          password: 1rL4k3wUoWlY7VoYEUndawsbcPQkJro3u8oEaiHTfdjQOjDIYQhwJQQJ99CCACYeBjFEqg7NAAACAZCRCdeD
+          
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+          context: .
+          push: true
+          tags: |
+            hellowworldtest.azurecr.io/${{ env.IMAGE_NAME }}:latest
 
+    - name: Deploy to Azure Container Apps
+      uses: azure/container-apps-deploy-action@v2
+      with:
+          containerAppName: hello-world
+          resourceGroup: 47552fb7-1cbb-4569-9a44-dba43c43285f_rg_6454
+          imageToDeploy: hellowworldtest.azurecr.io/${{ env.IMAGE_NAME }}:latest
+ 
     # - name: Run Azure CLI commands
     #   run: |
     #     az containerapp up -n hello-world --repo https://github.com/rubeshudayakumar/Azure-Container-App 
