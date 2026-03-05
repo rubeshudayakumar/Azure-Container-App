@@ -5,6 +5,10 @@ on:
   push:
     branches: [main]
 
+permissions:
+  id-token: write
+  contents: read
+
 env:
   AZURE_CONTAINER_REGISTRY: helloworld33823
   CONTAINER_APP_NAME: hello-world394324
