@@ -1,55 +1,44 @@
-name: Azure CLI Login with OIDC
+name: Deploy to Azure 
 
-on: [push,workflow_dispatch]
-
-# Permissions required for OIDC
-permissions:
-  id-token: write
-  contents: read
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
 
 env:
-  IMAGE_NAME: react-app
+  AZURE_CONTAINER_REGISTRY: api
+  CONTAINER_APP_NAME: api
+  RESOURCE_GROUP: api
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Azure CLI Login
-      uses: azure/login@v2
-      with:
-        creds: |
-            {
-              "clientId": "${{ secrets.AZURE_CLIENT_ID }}",
-              "clientSecret": "${{ secrets.AZURE_CLIENT_SECRET }}",
-              "subscriptionId": "${{ secrets.AZURE_SUBSCRIPTION_ID }}",
-              "tenantId": "${{ secrets.AZURE_TENANT_ID }}"
-            }
+      - name: Log in to ACR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io
+          username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
+          password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
 
-    - name: Log in to Azure Container Registry
-      uses: docker/login-action@v3
-      with:
-          registry: hellowworldtest.azurecr.io
-          username: hellowworldtest
-          password: 1rL4k3wUoWlY7VoYEUndawsbcPQkJro3u8oEaiHTfdjQOjDIYQhwJQQJ99CCACYeBjFEqg7NAAACAZCRCdeD
-          
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v5
-      with:
-          context: .
+      - name: Build and push container image to ACR
+        uses: docker/build-push-action@v6
+        with:
           push: true
-          tags: |
-            hellowworldtest.azurecr.io/${{ env.IMAGE_NAME }}:latest
+          tags: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_APP_NAME }}:${{ github.sha }}
+          file: Dockerfile
 
-    - name: Deploy to Azure Container Apps
-      uses: azure/container-apps-deploy-action@v2
-      with:
-          containerAppName: hello-world
-          resourceGroup: 47552fb7-1cbb-4569-9a44-dba43c43285f_rg_6454
-          imageToDeploy: hellowworldtest.azurecr.io/${{ env.IMAGE_NAME }}:latest
- 
-    # - name: Run Azure CLI commands
-    #   run: |
-    #     az containerapp up -n hello-world --repo https://github.com/rubeshudayakumar/Azure-Container-App 
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Container Apps
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          imageToDeploy: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_APP_NAME }}:${{ github.sha }}
+          resourceGroup: ${{ env.RESOURCE_GROUP }}
+          containerAppName: ${{ env.CONTAINER_APP_NAME }}
