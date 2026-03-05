@@ -6,8 +6,8 @@ on:
     branches: [main]
 
 env:
-  AZURE_CONTAINER_REGISTRY: api
-  CONTAINER_APP_NAME: api
+  AZURE_CONTAINER_REGISTRY: helloworld33823
+  CONTAINER_APP_NAME: hello-world
 
 jobs:
   build-and-deploy:
