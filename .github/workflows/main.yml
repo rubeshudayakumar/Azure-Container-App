@@ -49,6 +49,9 @@ jobs:
           imageToDeploy: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_APP_NAME }}:${{ github.sha }}
           resourceGroup: ${{ env.RESOURCE_GROUP }}
           containerAppName: ${{ env.CONTAINER_APP_NAME }}
+          containerAppEnvironment: hello-world394324-env
           registryUrl: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io
           registryUsername: ${{ secrets.AZURE_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
+          ingress: external
+          targetPort: 3000
