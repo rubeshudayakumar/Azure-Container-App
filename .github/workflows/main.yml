@@ -10,9 +10,9 @@ permissions:
   contents: read
 
 env:
-  AZURE_CONTAINER_REGISTRY: helloworld33823
+  AZURE_CONTAINER_REGISTRY: helloworld3232
   CONTAINER_APP_NAME: hello-world394324
-  RESOURCE_GROUP: 1-83e7eeac-playground-sandbox
+  RESOURCE_GROUP: friday-test
 
 jobs:
   build-and-deploy:
