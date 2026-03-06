@@ -54,4 +54,4 @@ jobs:
           registryUsername: ${{ secrets.AZURE_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
           ingress: external
-          targetPort: 3000
+          targetPort: 80
