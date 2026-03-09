@@ -10,9 +10,9 @@ permissions:
   contents: read
 
 env:
-  AZURE_CONTAINER_REGISTRY: helloworld323434324
-  CONTAINER_APP_NAME: hello-world44555443
-  RESOURCE_GROUP: test
+  AZURE_CONTAINER_REGISTRY: charanraj
+  CONTAINER_APP_NAME: hello-world-charan-1605
+  RESOURCE_GROUP: charan
 
 jobs:
   build-and-deploy:
