@@ -10,9 +10,9 @@ permissions:
   contents: read
 
 env:
-  AZURE_CONTAINER_REGISTRY: charanraj
-  CONTAINER_APP_NAME: hello-world-charan-1605
-  RESOURCE_GROUP: charan
+  AZURE_CONTAINER_REGISTRY: devopshorizonregistry
+  CONTAINER_APP_NAME: devops-horizon-container-app
+  RESOURCE_GROUP: dev_resource_group
 
 jobs:
   build-and-deploy:
