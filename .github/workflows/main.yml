@@ -12,7 +12,7 @@ permissions:
 env:
   AZURE_CONTAINER_REGISTRY: devopshorizonregistry
   CONTAINER_APP_NAME: devops-horizon-container-app
-  RESOURCE_GROUP: dev_resource_group
+  RESOURCE_GROUP: 1-20ed2789-playground-sandbox
 
 jobs:
   build-and-deploy:
@@ -35,12 +35,20 @@ jobs:
           tags: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_APP_NAME }}:${{ github.sha }}
           file: Dockerfile
 
+      # - name: Azure Login
+      #   uses: azure/login@v2
+      #   with:
+      #     client-id: ${{ secrets.AZURE_CLIENT_ID }}
+      #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+      #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
       - name: Azure Login
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
 
 
       - name: Deploy to Azure Container Apps
